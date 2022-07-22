@@ -8,6 +8,8 @@ import com.soulcode.Servicos.Repositories.ChamadoRepository;
 import com.soulcode.Servicos.Repositories.ClienteRepository;
 import com.soulcode.Servicos.Repositories.FuncionarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -27,30 +29,37 @@ public class ChamadoService {
     FuncionarioRepository funcionarioRepository;
 
     // findAll (método da Spring Data) - busca todos os registros
+    @Cacheable("chamadosCache")
     public List<Chamado> mostrarTodosChamados(){
         return chamadoRepository.findAll();	}
 
     // findById - busca um registro pela sua chave primária
+    @Cacheable(value = "chamadosCache", key = "#idChamado")
     public Chamado mostrarUmChamado(Integer idChamado) {
         Optional<Chamado> chamado = chamadoRepository.findById(idChamado);
         return chamado.orElseThrow();
     }
 
+
+    @Cacheable(value = "chamadosCache", key = "idCliente")
     public List<Chamado> buscarChamadosPeloCliente(Integer idCliente){
         Optional<Cliente> cliente = clienteRepository.findById(idCliente);
         return chamadoRepository.findByCliente(cliente);
 
     }
-
+    @Cacheable(value = "chamadosCache", key = "#idFuncionario")
     public List<Chamado> buscarChamadosPeloFuncionario(Integer idFuncionario){
         Optional<Funcionario> funcionario = funcionarioRepository.findById(idFuncionario);
         return chamadoRepository.findByFuncionario(funcionario);
     }
 
+    @Cacheable(value = "chamadosCache", key = "#status")
     public List<Chamado> buscarChamadosPeloStatus(String status){
         return chamadoRepository.findByStatus(status);
     }
 
+
+    @Cacheable(value = "chamadosCache", key = "T(java.util.Objects).hash(#data1, # data2)")
     public List<Chamado> buscarPorIntervaloData(Date data1, Date data2){
         return chamadoRepository.findByIntervaloData(data1,data2);
     }
@@ -63,6 +72,8 @@ public class ChamadoService {
     //          3) no momento do cadastro do chamado, o status desse chamado deve ser RECEBIDO
 
     //serviço para cadastro de novo chamado
+
+    @CachePut(value = "chamadosCache", key = "#chamados.idChamado")
     public Chamado cadastrarChamado(Chamado chamado, Integer idCliente){
         // regra 3 - atribuuição do status recebido pra o chamado que está sendo cadastrado
         chamado.setStatus(StatusChamado.RECEBIDO);
@@ -82,6 +93,9 @@ public class ChamadoService {
     //Método para editar um chamado
     // no momento da edição de um chamado devemos preservar o cliente e o funcionário desse chamado
     // vamos editar os dados do chamado, mas contiuamos com os dados do cliente e os dados do funcionário
+
+
+    @CachePut(value = "chamadosCache", key = "#idChamado")
     public Chamado editarChamado(Chamado chamado, Integer idChamado){
         //instanciamos aqui um objeto do tipo Chamado para guardar os dados do chamados
         //sem as novas alteracoes
@@ -98,6 +112,8 @@ public class ChamadoService {
     // ou trocar o funcionário de determinado chamado
     // -> regra -> no momento em que um determinado chamado é atribuído a um funcionário
     //             o status do chamado precisa ser alterado para ATRIBUIDO
+
+    @CachePut(value = "chamadosCache", key = "#idChamado")
     public Chamado atribuirFuncionario(Integer idChamado, Integer idFuncionario){
         // buscar os dados do funcionário que vai ser atibuído a esse chamado
         Optional<Funcionario> funcionario = funcionarioRepository.findById(idFuncionario);
@@ -110,6 +126,8 @@ public class ChamadoService {
     }
 
     //método para modificar o status de um chamado
+
+    @CachePut(value = "chamadosCache", key = "#idChamado")
     public Chamado modificarStatus(Integer idChamado,String status){
         Chamado chamado = mostrarUmChamado(idChamado);
         switch (status){
