@@ -19,4 +19,9 @@ public class UserService {
     public User cadastrar(User user) {
         return userRepository.save(user);
     }
+
+    public User mudarSenha(User user) {
+
+        return userRepository.save(user);
+    }
 }

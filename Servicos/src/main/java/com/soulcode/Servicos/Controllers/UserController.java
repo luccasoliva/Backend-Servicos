@@ -1,6 +1,7 @@
 package com.soulcode.Servicos.Controllers;
 
 import com.soulcode.Servicos.Models.User;
+import com.soulcode.Servicos.Repositories.UserRepository;
 import com.soulcode.Servicos.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,9 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @GetMapping("/usuarios")
     public List<User> usuarios() {
         return userService.listar();
@@ -30,5 +34,19 @@ public class UserController {
         user.setPassword(senhaCodificada);
         user = userService.cadastrar(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PutMapping("/AlterarSenhaUser/{id}")
+    public ResponseEntity<User> mudarSenha(@PathVariable Integer id, @RequestBody User user) {
+        String senhaCodificada = passwordEncoder.encode(user.getPassword());
+        if (user.getPassword().isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }else {
+            user.setId(id);
+            user.setLogin(userRepository.findById(id).get().getLogin());
+            user.setPassword(senhaCodificada);
+            user = userService.mudarSenha(user);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
+        }
     }
 }
