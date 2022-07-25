@@ -74,5 +74,11 @@ public class FuncionarioController {
         return funcionarios;
     }
 
+    @GetMapping("/funcionariosSemFoto")
+    public List<Funcionario> mostrarTodosFuncionariosSemFoto(){
+        List<Funcionario> funcionarios = funcionarioService.buscarFuncionariosSemFoto();
+        return funcionarios;
+    }
+
 
 }

@@ -94,4 +94,11 @@ public class FuncionarioService {
         Optional<Cargo> cargo = cargoRepository.findByNome(nomeCargo);
         return funcionarioRepository.findByCargo(cargo);
     }
+
+    @Cacheable(value = "funcionariosCache")
+    public List<Funcionario> buscarFuncionariosSemFoto(){
+        return funcionarioRepository.findByFotoIsNull();
+    }
+
+
 }
