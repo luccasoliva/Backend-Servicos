@@ -15,4 +15,5 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Intege
     //Optional<Funcionario> findByNomeAndEmailAndFoto(String nome, String email, String foto);
     List<Funcionario> findByCargo(Optional<Cargo> cargo);
 
+    List<Funcionario> findByFotoIsNull();
 }
