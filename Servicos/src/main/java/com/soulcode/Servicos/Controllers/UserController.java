@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -48,5 +49,24 @@ public class UserController {
             user = userService.mudarSenha(user);
             return ResponseEntity.status(HttpStatus.OK).body(user);
         }
+    }
+
+    @PutMapping("/desabilitarUsuario/{id}")
+    public ResponseEntity<User> desabilitarConta(@PathVariable Integer id, User user, Principal principal) {
+        //see if the user is logged
+        if (principal != null) {
+
+            if (principal.getName().equals(userRepository.findById(id).get().getLogin())) {
+                user.setId(id);
+                user.setLogin(userRepository.findById(id).get().getLogin());
+                user = userService.desabilitarConta(user);
+                return ResponseEntity.status(HttpStatus.OK).body(user);
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
     }
 }

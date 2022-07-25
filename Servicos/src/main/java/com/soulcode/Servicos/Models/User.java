@@ -1,6 +1,7 @@
 package com.soulcode.Servicos.Models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -14,6 +15,17 @@ public class User {
     private String login;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
+    @ColumnDefault("true") // 1 -> enabled, 0 -> disabled
+    private boolean isEnabled = true;
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
+    }
 
     public Integer getId() {
         return id;

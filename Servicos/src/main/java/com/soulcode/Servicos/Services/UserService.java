@@ -24,4 +24,11 @@ public class UserService {
 
         return userRepository.save(user);
     }
+
+    public User desabilitarConta(User user) {
+        user.setEnabled(false);
+        return userRepository.save(user);
+    }
+
+
 }

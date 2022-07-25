@@ -23,7 +23,7 @@ public class AuthUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuário não encontrado");
         }
         // user.get().getStatus();
-        return new AuthUserDetail(user.get().getLogin(), user.get().getPassword());
+        return new AuthUserDetail(user.get().getLogin(), user.get().getPassword(),user.get().isEnabled());
     }
 }
 /**
