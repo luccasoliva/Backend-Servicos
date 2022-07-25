@@ -68,5 +68,11 @@ public class FuncionarioController {
         return ResponseEntity.ok().body(funcionario);
     }
 
+    @GetMapping("/funcionarios/cargo/{nomeCargo}")
+    public List<Funcionario> buscarFuncionariosPorCargo(@PathVariable String nomeCargo){
+        List<Funcionario> funcionarios = funcionarioService.buscarFuncionariosPorCargo(nomeCargo);
+        return funcionarios;
+    }
+
 
 }

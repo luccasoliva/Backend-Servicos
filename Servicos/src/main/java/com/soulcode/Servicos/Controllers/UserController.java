@@ -51,22 +51,18 @@ public class UserController {
         }
     }
 
-    @PutMapping("/desabilitarUsuario/{id}")
-    public ResponseEntity<User> desabilitarConta(@PathVariable Integer id, User user, Principal principal) {
+    @PutMapping("/desabilitarUsuario/{login}")
+    public ResponseEntity<User> desabilitarConta(@PathVariable String login, User user, Principal principal) {
         //see if the user is logged
-        if (principal != null) {
+        if (principal.getName().equals(login)) {
+            user.setId(userRepository.findByLogin(login).get().getId());
+            user.setLogin(login);
+            user.setPassword(userRepository.findByLogin(login).get().getPassword());
 
-            if (principal.getName().equals(userRepository.findById(id).get().getLogin())) {
-                user.setId(id);
-                user.setLogin(userRepository.findById(id).get().getLogin());
-                user = userService.desabilitarConta(user);
-                return ResponseEntity.status(HttpStatus.OK).body(user);
-            } else {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
-            }
+            user = userService.desabilitarConta(user);
+            return ResponseEntity.status(HttpStatus.OK).body(user);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
-
     }
 }
