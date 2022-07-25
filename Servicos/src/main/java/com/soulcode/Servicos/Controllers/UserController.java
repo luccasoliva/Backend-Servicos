@@ -37,23 +37,30 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
-    @PutMapping("/AlterarSenhaUser/{id}")
-    public ResponseEntity<User> mudarSenha(@PathVariable Integer id, @RequestBody User user) {
-        String senhaCodificada = passwordEncoder.encode(user.getPassword());
-        if (user.getPassword().isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }else {
-            user.setId(id);
-            user.setLogin(userRepository.findById(id).get().getLogin());
-            user.setPassword(senhaCodificada);
-            user = userService.mudarSenha(user);
-            return ResponseEntity.status(HttpStatus.OK).body(user);
-        }
+    @PutMapping("/alterarSenhaUser/{login}")
+    public ResponseEntity<User> mudarSenha(@PathVariable String login, @RequestBody User user, Principal principal) {
+
+            if (principal.getName().equals(login)) {
+                String senhaCodificada = passwordEncoder.encode(user.getPassword());
+                if (user.getPassword().isEmpty()){
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+                }else {
+                    user.setId(userRepository.findByLogin(login).get().getId());
+                    user.setLogin(login);
+                    user.setPassword(senhaCodificada);
+                    user = userService.mudarSenha(user);
+                    return ResponseEntity.status(HttpStatus.OK).body(user);
+                }
+            } else {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+            }
+
+
     }
 
     @PutMapping("/desabilitarUsuario/{login}")
     public ResponseEntity<User> desabilitarConta(@PathVariable String login, User user, Principal principal) {
-        //see if the user is logged
+
         if (principal.getName().equals(login)) {
             user.setId(userRepository.findByLogin(login).get().getId());
             user.setLogin(login);
