@@ -80,5 +80,11 @@ public class FuncionarioController {
         return funcionarios;
     }
 
+    @GetMapping("/funcionariosSemChamados")
+    public List<Funcionario> buscarFuncionariosSemChamado(){
+        List<Funcionario> funcionarios = funcionarioService.buscarFuncionariosSemChamado();
+        return funcionarios;
+    }
+
 
 }

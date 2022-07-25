@@ -100,5 +100,8 @@ public class FuncionarioService {
         return funcionarioRepository.findByFotoIsNull();
     }
 
-
+    @Cacheable(value = "funcionariosCache")
+    public List<Funcionario> buscarFuncionariosSemChamado(){
+        return funcionarioRepository.findByChamadosIsNull();
+    }
 }

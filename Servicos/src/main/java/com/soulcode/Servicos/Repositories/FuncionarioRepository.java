@@ -16,4 +16,6 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Intege
     List<Funcionario> findByCargo(Optional<Cargo> cargo);
 
     List<Funcionario> findByFotoIsNull();
+
+    List<Funcionario> findByChamadosIsNull();
 }
