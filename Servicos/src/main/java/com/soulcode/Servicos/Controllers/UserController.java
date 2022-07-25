@@ -62,7 +62,7 @@ public class UserController {
             user = userService.desabilitarConta(user);
             return ResponseEntity.status(HttpStatus.OK).body(user);
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
         }
     }
 }
