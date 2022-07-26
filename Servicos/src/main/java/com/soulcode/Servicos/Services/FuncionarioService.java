@@ -7,6 +7,7 @@ import com.soulcode.Servicos.Repositories.FuncionarioRepository;
 import com.soulcode.Servicos.Services.Exceptions.DataIntegrityViolationException;
 import com.soulcode.Servicos.Services.Exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -26,6 +27,9 @@ public class FuncionarioService {
 
     @Autowired
     CargoRepository cargoRepository;
+
+
+    private CacheManager cacheManager;
 
     //primeiro serviço na tabela de funcionário vai ser a leitura de todos
     //os funcionários cadastrados
@@ -66,41 +70,47 @@ public class FuncionarioService {
     //vamos criar um serviço para cadastrar um novo funcionário
     @CachePut(value = "funcionariosCache", key = "#funcionario.idFuncionario") // funcionarios::1
     public Funcionario cadastrarFuncionario(Funcionario funcionario, Integer idCargo) throws DataIntegrityViolationException {
-        //só por precaução nós vamos colocar o id do funcionário como nullo
+
+
         funcionario.setIdFuncionario(null);
         Optional<Cargo> cargo = cargoRepository.findById(idCargo);
         funcionario.setCargo(cargo.get());
+
         return funcionarioRepository.save(funcionario);
     }
 
     @CacheEvict(value = "funcionariosCache", key = "#idFuncionario") // funcionarios::1
     public void excluirFuncionario(Integer idFuncionario){
+
         funcionarioRepository.deleteById(idFuncionario);
     }
+    @CachePut(value = "funcionariosCache", key = "#funcionario.idFuncionario")
     public Funcionario editarFuncionario(Funcionario funcionario){
+
         return funcionarioRepository.save(funcionario);
     }
 
 
-    @CachePut(value = "funcionariosCache", key = "#funcionario.idFuncionario") // funcionarios::1
+    @CachePut(value = "funcionariosCache", key = "#idFuncionario") // funcionarios::1
     public Funcionario salvarFoto(Integer idFuncionario, String caminhoFoto){
         Funcionario funcionario = mostrarUmFuncionarioPeloId(idFuncionario);
         funcionario.setFoto(caminhoFoto);
+
         return funcionarioRepository.save(funcionario);
     }
 
-    @Cacheable(value = "funcionariosCache")
-    public List<Funcionario> buscarFuncionariosPorCargo(String nomeCargo){
-        Optional<Cargo> cargo = cargoRepository.findByNome(nomeCargo);
-        return funcionarioRepository.findByCargo(cargo);
+    //Número total de funcionarios pelo findByCargo_Nome
+
+    public List<Funcionario> totalFuncionariosPeloCargo(String nomeCargo){
+        return funcionarioRepository.findByCargo_Nome(nomeCargo);
     }
 
-    @Cacheable(value = "funcionariosCache")
+
     public List<Funcionario> buscarFuncionariosSemFoto(){
         return funcionarioRepository.findByFotoIsNull();
     }
 
-    @Cacheable(value = "funcionariosCache")
+
     public List<Funcionario> buscarFuncionariosSemChamado(){
         return funcionarioRepository.findByChamadosIsNull();
     }

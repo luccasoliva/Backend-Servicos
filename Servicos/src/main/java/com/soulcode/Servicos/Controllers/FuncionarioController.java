@@ -68,11 +68,12 @@ public class FuncionarioController {
         return ResponseEntity.ok().body(funcionario);
     }
 
-    @GetMapping("/funcionarios/cargo/{nomeCargo}")
-    public List<Funcionario> buscarFuncionariosPorCargo(@PathVariable String nomeCargo){
-        List<Funcionario> funcionarios = funcionarioService.buscarFuncionariosPorCargo(nomeCargo);
-        return funcionarios;
+    //Número total de funcionarios pelo findByCargo_Nome
+    @GetMapping("/qtdFuncionariosPorCargo")
+    public int totalFuncionariosPeloCargo(@RequestParam("cargo") String nomeCargo){
+        return funcionarioService.totalFuncionariosPeloCargo(nomeCargo).size();
     }
+
 
     @GetMapping("/funcionariosSemFoto")
     public List<Funcionario> mostrarTodosFuncionariosSemFoto(){

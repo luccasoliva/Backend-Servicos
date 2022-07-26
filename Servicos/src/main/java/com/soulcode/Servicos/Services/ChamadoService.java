@@ -1,12 +1,10 @@
 package com.soulcode.Servicos.Services;
 
-import com.soulcode.Servicos.Models.Chamado;
-import com.soulcode.Servicos.Models.Cliente;
-import com.soulcode.Servicos.Models.Funcionario;
-import com.soulcode.Servicos.Models.StatusChamado;
+import com.soulcode.Servicos.Models.*;
 import com.soulcode.Servicos.Repositories.ChamadoRepository;
 import com.soulcode.Servicos.Repositories.ClienteRepository;
 import com.soulcode.Servicos.Repositories.FuncionarioRepository;
+import com.soulcode.Servicos.Repositories.PagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -27,6 +25,9 @@ public class ChamadoService {
 
     @Autowired
     FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    PagamentoRepository pagamentoRepository;
 
     // findAll (método da Spring Data) - busca todos os registros
     @Cacheable("chamadosCache")
@@ -63,6 +64,21 @@ public class ChamadoService {
     public List<Chamado> buscarPorIntervaloData(Date data1, Date data2){
         return chamadoRepository.findByIntervaloData(data1,data2);
     }
+
+    //findChamadoByStatusPagamento
+    @Cacheable(value = "chamadosCache", key = "T(java.util.Objects).hash(#status)")
+    public List<Chamado> buscarChamadosPeloStatusPagamento(String status){
+        return chamadoRepository.findChamadoByStatusPagamento(status);
+    }
+    //nymero de chamados por status
+    @Cacheable(value = "chamadosCache", key = "T(java.util.Objects).hash(#status)")
+    public Integer buscarNumeroChamadosPeloStatus(String status){
+        return chamadoRepository.findByStatus(status).size();
+    }
+
+
+
+
 
     //cadastrar um novo chamado
     // temos 2 regras:
@@ -154,6 +170,7 @@ public class ChamadoService {
         }
         return chamadoRepository.save(chamado);
     }
+
 
 
 }
