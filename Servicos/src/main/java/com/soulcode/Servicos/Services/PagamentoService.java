@@ -5,6 +5,7 @@ import com.soulcode.Servicos.Models.Pagamento;
 import com.soulcode.Servicos.Models.StatusPagamento;
 import com.soulcode.Servicos.Repositories.ChamadoRepository;
 import com.soulcode.Servicos.Repositories.PagamentoRepository;
+import com.soulcode.Servicos.Services.Exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class PagamentoService {
             chamadoRepository.save(chamado.get());
             return pagamento;
         }else{
-            throw new RuntimeException();
+            throw new EntityNotFoundException("Chamado não encontrado: " + idChamado);
         }
 
     }
