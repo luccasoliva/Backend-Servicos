@@ -1,6 +1,7 @@
 package com.soulcode.Servicos.Config;
 
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
+import org.springframework.cache.CacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
@@ -8,17 +9,22 @@ import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSeriali
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.time.Duration;
+import java.util.Collection;
 
 @Configuration
 public class CacheConfig {
     // converter de json para redis e vice-versa
+
+
+
+
     private final RedisSerializationContext.SerializationPair<Object> serializationPair = RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer());
 
     @Bean
     public RedisCacheConfiguration cacheConfiguration() {// customizar a config padrão do redis cache
         return RedisCacheConfiguration
                 .defaultCacheConfig() // customizar informações padrões
-                .entryTtl(Duration.ofMinutes(5)) // todos os caches terão 5 min por padrão (tempo de vida)
+                .entryTtl(Duration.ofMinutes(1)) // todos os caches terão 5 min por padrão (tempo de vida)
                 .disableCachingNullValues() // não salva valores nulos
                 .serializeValuesWith(serializationPair); // converte do redis p/ json e vice-versa
     }
@@ -34,6 +40,18 @@ public class CacheConfig {
                         RedisCacheConfiguration.defaultCacheConfig()
                                 .entryTtl(Duration.ofSeconds(10))
                                 .serializeValuesWith(serializationPair)
+                ).withCacheConfiguration("cargosCache",
+                        RedisCacheConfiguration.defaultCacheConfig()
+                                .entryTtl(Duration.ofSeconds(5))
+                                .serializeValuesWith(serializationPair)
+
+                ).withCacheConfiguration("funcionariosCache",
+                        RedisCacheConfiguration.defaultCacheConfig()
+                                .entryTtl(Duration.ofSeconds(5))
+                                .serializeValuesWith(serializationPair)
+
                 );
     }
+
+
 }
