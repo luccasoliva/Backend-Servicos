@@ -72,4 +72,9 @@ public class PagamentoService {
 
         return pagamentoRepository.orcamentoComServicoCliente();
     }
+
+    //número de pagamentos por status
+    public int numeroPagamentosPorStatus(String status){
+        return pagamentoRepository.findByStatus(status).size();
+    }
 }

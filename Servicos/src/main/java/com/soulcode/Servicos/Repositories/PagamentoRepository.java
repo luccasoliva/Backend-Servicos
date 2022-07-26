@@ -16,4 +16,6 @@ public interface PagamentoRepository extends JpaRepository<Pagamento,Integer> {
             "\tFROM chamado RIGHT JOIN pagamento ON chamado.id_chamado = pagamento.id_pagamento\n" +
             "    LEFT JOIN cliente ON cliente.id_cliente = chamado.id_cliente",nativeQuery = true)
     List<List> orcamentoComServicoCliente();
+
+
 }
