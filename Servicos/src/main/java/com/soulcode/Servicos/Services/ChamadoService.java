@@ -66,12 +66,12 @@ public class ChamadoService {
     }
 
     //findChamadoByStatusPagamento
-    @Cacheable(value = "chamadosCache", key = "T(java.util.Objects).hash(#status)")
+
     public List<Chamado> buscarChamadosPeloStatusPagamento(String status){
         return chamadoRepository.findChamadoByStatusPagamento(status);
     }
     //nymero de chamados por status
-    @Cacheable(value = "chamadosCache", key = "T(java.util.Objects).hash(#status)")
+
     public Integer buscarNumeroChamadosPeloStatus(String status){
         return chamadoRepository.findByStatus(status).size();
     }

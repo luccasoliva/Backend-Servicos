@@ -21,11 +21,6 @@ public class CargoService {
     CargoRepository cargoRepository;
 
 
-
-
-
-
-
     // primeiro serviço: mostrar todos os cargos cadastrados
     @Cacheable("cargosCache")
     public List<Cargo> mostrarTodosCargos(){
