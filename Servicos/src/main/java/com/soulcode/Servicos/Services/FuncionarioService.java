@@ -41,6 +41,7 @@ public class FuncionarioService {
     }
 
 
+
     //vamos mais um serviço relacionado ao funcionário
     //criar um serviço de buscar apenas um funcionário pelo seu id(chave primária)
 
@@ -65,6 +66,14 @@ public class FuncionarioService {
     public List<Funcionario> mostrarTodosFuncionariosDeUmCargo(Integer idCargo){
         Optional<Cargo> cargo = cargoRepository.findById(idCargo);
         return funcionarioRepository.findByCargo(cargo);
+    }
+
+    //query findTotalPagamento
+    public Double findTotalPagamento(Integer idFuncionario){
+        Optional<Funcionario> funcionario = Optional.ofNullable(funcionarioRepository.findById(idFuncionario).orElseThrow(
+                () -> new EntityNotFoundException("Funcionário não cadastrado: " + idFuncionario)
+        ));
+        return funcionarioRepository.findTotalPagamento(funcionario);
     }
 
     //vamos criar um serviço para cadastrar um novo funcionário
