@@ -3,6 +3,7 @@ package com.soulcode.Servicos.Repositories;
 import com.soulcode.Servicos.Models.Cargo;
 import com.soulcode.Servicos.Models.Funcionario;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +23,6 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Intege
 
     List<Funcionario> findByChamadosIsNull();
 
+    @Query(value = "  SELECT SUM(pagamento.valor) AS \"TOTAL\" FROM pagamento, chamado, funcionario WHERE chamado.status = \"CONCLUIDO\" AND funcionario.id_funcionario = :idFuncionario AND chamado.id_funcionario = funcionario.id_funcionario AND pagamento.id_pagamento = chamado.id_chamado AND pagamento.status = \"QUITADO\";\n" , nativeQuery = true)
+    Double findTotalPagamento(Optional<Funcionario> idFuncionario);
 }

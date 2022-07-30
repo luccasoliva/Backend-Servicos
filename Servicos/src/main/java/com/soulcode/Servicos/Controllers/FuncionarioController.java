@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Objects;
 
 @CrossOrigin
 @RestController
@@ -23,6 +24,7 @@ public class FuncionarioController {
         List<Funcionario> funcionarios = funcionarioService.mostrarTodosFuncionarios();
         return funcionarios;
     }
+
 
     @GetMapping("/funcionarios/{idFuncionario}")
     public ResponseEntity<Funcionario> mostrarUmFuncionarioPeloId(@PathVariable Integer idFuncionario){
@@ -42,6 +44,12 @@ public class FuncionarioController {
         return funcionarios;
     }
 
+    //findTotalPagamento
+    @GetMapping("/funcionarios/totalRecebido/{idFuncionario}")
+    public Double findTotalPagamento(@PathVariable Integer idFuncionario){
+        Double total = funcionarioService.findTotalPagamento(idFuncionario);
+        return Objects.requireNonNullElse(total, 0.0);
+    }
 
     @PostMapping("/funcionarios/{idCargo}")
     public ResponseEntity<Funcionario> cadastrarFuncionario(@PathVariable Integer idCargo, @RequestBody Funcionario funcionario){
