@@ -2,6 +2,7 @@ package com.soulcode.Servicos.Services;
 
 import com.soulcode.Servicos.Models.Cargo;
 import com.soulcode.Servicos.Models.Funcionario;
+import com.soulcode.Servicos.Models.StatusFuncionario;
 import com.soulcode.Servicos.Repositories.CargoRepository;
 import com.soulcode.Servicos.Repositories.FuncionarioRepository;
 import com.soulcode.Servicos.Services.Exceptions.DataIntegrityViolationException;
@@ -38,6 +39,10 @@ public class FuncionarioService {
     public List<Funcionario> mostrarTodosFuncionarios(){
 
         return funcionarioRepository.findAll();
+    }
+    public List<Funcionario> mostrarTodosFuncionariosAtivos(){
+
+        return funcionarioRepository.findByStatus(StatusFuncionario.ATIVO.getConteudo());
     }
 
 
@@ -90,12 +95,12 @@ public class FuncionarioService {
 
     @CacheEvict(value = "funcionariosCache", key = "#idFuncionario") // funcionarios::1
     public void excluirFuncionario(Integer idFuncionario){
-
-        funcionarioRepository.deleteById(idFuncionario);
+        Funcionario funcionario = mostrarUmFuncionarioPeloId(idFuncionario);
+        funcionario.setStatus(StatusFuncionario.INATIVO);
+        funcionarioRepository.save(funcionario);
     }
     @CachePut(value = "funcionariosCache", key = "#funcionario.idFuncionario")
     public Funcionario editarFuncionario(Funcionario funcionario){
-
         return funcionarioRepository.save(funcionario);
     }
 

@@ -23,6 +23,9 @@ public class Funcionario {
     @Column(nullable = true)
     private String foto;
 
+    @Enumerated(EnumType.STRING)
+    private StatusFuncionario status;
+
     @JsonIgnore
     @OneToMany(mappedBy = "funcionario")
     private List<Chamado> chamados = new ArrayList<Chamado>();
@@ -32,6 +35,14 @@ public class Funcionario {
     @ManyToOne
     @JoinColumn(name = "idCargo")
     private Cargo cargo;
+
+    public StatusFuncionario getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusFuncionario status) {
+        this.status = status;
+    }
 
     public Integer getIdFuncionario() {
         return idFuncionario;

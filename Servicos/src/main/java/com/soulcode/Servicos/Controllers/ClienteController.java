@@ -43,8 +43,8 @@ public class ClienteController {
     @PutMapping("/clientes/{idCliente}")
     public ResponseEntity<Cliente> editarCliente(@PathVariable Integer idCliente, @RequestBody Cliente cliente) {
         cliente.setIdCliente(idCliente);
-        cliente = clienteService.editarCliente(cliente);
-        return ResponseEntity.noContent().build();
+        clienteService.editarCliente(cliente);
+        return ResponseEntity.ok().body(cliente);
     }
 
     @DeleteMapping("clientes/{idCliente}")
