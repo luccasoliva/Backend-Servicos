@@ -2,6 +2,8 @@ package com.soulcode.Servicos.Repositories;
 
 import com.soulcode.Servicos.Models.Cargo;
 import com.soulcode.Servicos.Models.Funcionario;
+import com.soulcode.Servicos.Models.Pagamento;
+import com.soulcode.Servicos.Models.StatusFuncionario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,6 +17,9 @@ public interface FuncionarioRepository extends JpaRepository<Funcionario, Intege
 
     //Optional<Funcionario> findByNomeAndEmailAndFoto(String nome, String email, String foto);
     List<Funcionario> findByCargo(Optional<Cargo> cargo);
+
+    @Query(value = "SELECT * FROM funcionario WHERE status = :status", nativeQuery = true)
+    List<Funcionario> findByStatus(String status);
 
     //findByNomeDoCargo
     List<Funcionario> findByCargo_Nome(String nome);

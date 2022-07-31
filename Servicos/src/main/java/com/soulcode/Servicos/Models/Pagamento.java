@@ -15,7 +15,7 @@ public class Pagamento {
     private double valor;
 
     @Column(nullable = false)
-    private String formPagamento;
+    private String formaPagamento;
 
     @Enumerated(EnumType.STRING)
     private StatusPagamento status;
@@ -36,12 +36,12 @@ public class Pagamento {
         this.valor = valor;
     }
 
-    public String getFormPagamento() {
-        return formPagamento;
+    public String getFormaPagamento() {
+        return formaPagamento;
     }
 
-    public void setFormPagamento(String formPagamento) {
-        this.formPagamento = formPagamento;
+    public void setFormaPagamento(String formaPagamento) {
+        this.formaPagamento = formaPagamento;
     }
 
     public StatusPagamento getStatus() {

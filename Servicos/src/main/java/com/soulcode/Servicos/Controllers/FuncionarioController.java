@@ -25,6 +25,11 @@ public class FuncionarioController {
         return funcionarios;
     }
 
+    @GetMapping("/funcionarios/ativos")
+    public List<Funcionario> mostrarTodosFuncionariosAtivos(){
+        List<Funcionario> funcionarios = funcionarioService.mostrarTodosFuncionariosAtivos();
+        return funcionarios;
+    }
 
     @GetMapping("/funcionarios/{idFuncionario}")
     public ResponseEntity<Funcionario> mostrarUmFuncionarioPeloId(@PathVariable Integer idFuncionario){
