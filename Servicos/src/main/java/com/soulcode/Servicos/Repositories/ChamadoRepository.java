@@ -25,5 +25,10 @@ public interface ChamadoRepository extends JpaRepository<Chamado,Integer> {
     @Query(value="SELECT DISTINCT chamado.*, pagamento.status FROM chamado, pagamento WHERE chamado.id_chamado = pagamento.id_pagamento AND pagamento.status = :status", nativeQuery = true)
     List<Chamado> findChamadoByStatusPagamento(String status);
 
+    @Query(value="SELECT * FROM chamado WHERE id_cliente = :idCliente", nativeQuery = true)
+    List<Chamado> findChamadosByIdCliente(Integer idCliente);
+
+
+
 
 }
