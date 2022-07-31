@@ -18,4 +18,13 @@ public interface PagamentoRepository extends JpaRepository<Pagamento,Integer> {
     List<List> orcamentoComServicoCliente();
 
 
+
+
+
+    @Query(value="SELECT * FROM pagamento WHERE pagamento.id_pagamento = :idPagamento", nativeQuery = true)
+    Pagamento findByIdPagamento(Integer idPagamento);
+
+
+
+
 }
