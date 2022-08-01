@@ -24,25 +24,27 @@ public class ChamadoController {
     public List<Chamado> mostrarTodosChamados(){
         List<Chamado> chamados = chamadoService.mostrarTodosChamados();
         return chamados;
-    }
+    } //
 
     @GetMapping("/chamados/{idChamado}")
     public ResponseEntity<Chamado> buscarUmChamado(@PathVariable Integer idChamado){
         Chamado chamado  = chamadoService.mostrarUmChamado(idChamado);
         return ResponseEntity.ok().body(chamado);
 
-    }
+    } //
 
     @GetMapping("/chamadosPeloCliente/{idCliente}")
     public List<Chamado> buscarChamadosPeloCliente(@PathVariable Integer idCliente){
         List<Chamado> chamados = chamadoService.buscarChamadosPeloCliente(idCliente);
         return chamados;
     }
-
+     /////////////////////////////////////////////////////////// falta fazer cadastrar e exlcuir e editar
     @GetMapping("/chamadosPeloFuncionario/{idFuncionario}")
     public List<Chamado> buscarChamadosPeloFuncionario(@PathVariable Integer idFuncionario){
         List<Chamado> chamados = chamadoService.buscarChamadosPeloFuncionario(idFuncionario);
-        return chamados;
+        return chamados;  /// erro verificar postman
+
+        ////////////////////////////////////////
     }
 
     @GetMapping("/chamadosPeloStatus")

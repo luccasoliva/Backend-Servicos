@@ -65,6 +65,7 @@ public class PagamentoController {
         return ResponseEntity.ok().body(pagamento);
     }
 
+
     @PutMapping("/pagamentosAlteracaoStatus/{idPagamento}")
     public ResponseEntity<Pagamento> modificarStatusPagamento(@PathVariable Integer idPagamento,
                                                               @RequestParam("status") String status){

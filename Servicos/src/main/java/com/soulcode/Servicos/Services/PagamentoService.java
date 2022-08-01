@@ -46,7 +46,7 @@ public class PagamentoService {
             chamadoRepository.save(chamado.get());
             return pagamento;
         }else{
-            throw new EntityNotFoundException("Chamado não encontrado: " + idChamado);
+            throw new RuntimeException();
         }
 
     }
