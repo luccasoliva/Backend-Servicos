@@ -19,12 +19,10 @@ public class UploadFile {
             Files.createDirectories(uploadPath);
         }
 
-        // aqui vamos tentar fazer o upload do arquivo
-        // InputStream - tentar fazer a leitura do arquivo que estamos querendo subir
-        // faz a leitura byte por byte do arquivo
+
         try(InputStream inputStream = file.getInputStream()){
 
-            // nesse momento o arquivo é salvo no diretório que passamos na assinatura do método
+
             Path filePath = uploadPath.resolve(fileName);
             Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
         }

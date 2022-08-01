@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-//@EnableCaching // comente caso o redis não esteja ok ainda
+//@EnableCaching
 @SpringBootApplication
 public class ServicosApplication {
 

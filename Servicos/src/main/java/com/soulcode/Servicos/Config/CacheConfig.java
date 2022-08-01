@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @Configuration
 public class CacheConfig {
-    // converter de json para redis e vice-versa
+
 
 
 
@@ -21,12 +21,12 @@ public class CacheConfig {
     private final RedisSerializationContext.SerializationPair<Object> serializationPair = RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer());
 
     @Bean
-    public RedisCacheConfiguration cacheConfiguration() {// customizar a config padrão do redis cache
+    public RedisCacheConfiguration cacheConfiguration() {
         return RedisCacheConfiguration
-                .defaultCacheConfig() // customizar informações padrões
-                .entryTtl(Duration.ofMinutes(1)) // todos os caches terão 5 min por padrão (tempo de vida)
-                .disableCachingNullValues() // não salva valores nulos
-                .serializeValuesWith(serializationPair); // converte do redis p/ json e vice-versa
+                .defaultCacheConfig()
+                .entryTtl(Duration.ofMinutes(1))
+                .disableCachingNullValues()
+                .serializeValuesWith(serializationPair);
     }
 
     @Bean
