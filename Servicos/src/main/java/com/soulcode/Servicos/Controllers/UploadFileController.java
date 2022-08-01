@@ -23,8 +23,8 @@ public class UploadFileController {
                                            @RequestParam("nome") String nome){
 
         String fileName = nome;
-        String uploadDir = "/home/tatiana/Downloads/fotoFunc";
-        String nomeMaisCaminho = "/home/tatiana/Downloads/fotoFunc/" + nome;
+        String uploadDir = "C:/Users/Daiana/Desktop/fotoFunc";
+        String nomeMaisCaminho = "C:/Users/Daiana/Desktop/fotoFun/"  + nome;
 
 
         try{

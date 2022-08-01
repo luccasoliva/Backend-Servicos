@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class JWTUtils { // gerenciar e gerar tokens
+public class TokenUtils { // gerenciar e gerar tokens
     @Value("${jwt.secret}")
     private String secret;
 

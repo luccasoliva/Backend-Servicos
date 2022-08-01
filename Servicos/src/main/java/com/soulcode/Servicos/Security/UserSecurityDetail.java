@@ -8,13 +8,13 @@ import java.util.Collection;
 
 // Abstrai o User do banco para que o Security conheça seus dados
 // Ou conhecer o usuário melhor =)
-public class AuthUserDetail implements UserDetails {
+public class UserSecurityDetail implements UserDetails {
     private String login;
     private String password;
 
     private boolean isEnabled;
 
-    public AuthUserDetail(String login, String password, boolean isEnabled) {
+    public UserSecurityDetail(String login, String password, boolean isEnabled) {
         this.login = login;
         this.password = password;
         this.isEnabled = isEnabled;

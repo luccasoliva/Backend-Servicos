@@ -1,6 +1,6 @@
 package com.soulcode.Servicos.Security;
 
-import com.soulcode.Servicos.Util.JWTUtils;
+import com.soulcode.Servicos.Util.TokenUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,10 +14,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 // Entra em ação em todos endpoints que está protegido
-public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
-    private JWTUtils jwtUtils;
+public class AuthorizationFilter extends BasicAuthenticationFilter {
+    private TokenUtils jwtUtils;
 
-    public JWTAuthorizationFilter(AuthenticationManager manager, JWTUtils jwtUtils) {
+    public AuthorizationFilter(AuthenticationManager manager, TokenUtils jwtUtils) {
         super(manager);
         this.jwtUtils = jwtUtils;
     }
