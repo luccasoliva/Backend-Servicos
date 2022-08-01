@@ -41,7 +41,7 @@ public class PagamentoController {
         List<List> pagamentos = pagamentoService.orcamentoComServicoCliente();
         return pagamentos;
     }
-    //numeroPagamentosPorStatus
+
     @GetMapping("/numeroPagamentosPorStatus")
     public int numeroPagamentosPorStatus(@RequestParam("status") String status){
         int pagamentos = pagamentoService.numeroPagamentosPorStatus(status);

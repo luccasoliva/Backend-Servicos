@@ -29,7 +29,7 @@ public class ClienteController {
         return ResponseEntity.ok().body(cliente);
     }
 
-    //mostrarValorPago
+
     @GetMapping("/clientes/{idCliente}/totalPago")
     public ResponseEntity<Double> mostrarValorPago(@PathVariable Integer idCliente){
         Double valorPago = clienteService.mostrarValorPago(idCliente);

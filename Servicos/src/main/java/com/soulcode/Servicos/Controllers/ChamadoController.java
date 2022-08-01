@@ -38,13 +38,13 @@ public class ChamadoController {
         List<Chamado> chamados = chamadoService.buscarChamadosPeloCliente(idCliente);
         return chamados;
     }
-     /////////////////////////////////////////////////////////// falta fazer cadastrar e exlcuir e editar
+
     @GetMapping("/chamadosPeloFuncionario/{idFuncionario}")
     public List<Chamado> buscarChamadosPeloFuncionario(@PathVariable Integer idFuncionario){
         List<Chamado> chamados = chamadoService.buscarChamadosPeloFuncionario(idFuncionario);
-        return chamados;  /// erro verificar postman
+        return chamados;
 
-        ////////////////////////////////////////
+
     }
 
     @GetMapping("/chamadosPeloStatus")
@@ -66,7 +66,7 @@ public class ChamadoController {
         return chamados;
     }
 
-    //quantidade de chamados por status
+
     @GetMapping("/chamados/quantidadePorStatus")
     public Integer buscarQuantidadeChamadosPorStatus(@RequestParam("status") String status){
         Integer quantidade = chamadoService.buscarNumeroChamadosPeloStatus(status);
@@ -108,7 +108,7 @@ public class ChamadoController {
         return ResponseEntity.noContent().build();
     }
 
-    //vamos construr o mapeamento do método para modificar o status de um chamado
+
     @PutMapping("/chamadosModificarStatus/{idChamado}")
     public ResponseEntity<Chamado> modificarStatus(@PathVariable Integer idChamado,
                                                    @RequestParam("status") String status){

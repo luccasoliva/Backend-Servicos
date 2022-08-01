@@ -20,7 +20,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-// Agrega todas as informações de segurança http, e gerência do user.
+
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
@@ -31,45 +31,43 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // UserDetailsService -> carregar o usuário do banco
-        // BCrypt -> gerador de hash de senhas
-        // Usa passwordEncoder() para comparar senhas de login
+
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // habilita o cors e desabilita o csrf
+
         http.cors().and().csrf().disable();
-        // JWTAuthenticationFilter é chamado quando uso /login
+
         http.addFilter(new AuthenticationFilter(authenticationManager(), jwtUtils));
         http.addFilter(new AuthorizationFilter(authenticationManager(), jwtUtils));
 
-        http.authorizeRequests() // autoriza requisições
+        http.authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-//                .antMatchers(HttpMethod.GET, "/servicos/**").permitAll() // ** representa qualquer possibilidade
+
                 .anyRequest().authenticated();
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-    // TODO: explicação do restante e do Redis Cache
+
     @Bean
-    // CROSS ORIGIN RESOURCE SHARING
-    CorsConfigurationSource corsConfigurationSource() { // configuração global de CORS
-        CorsConfiguration configuration = new CorsConfiguration(); // configurações padrões
-        configuration.setAllowedMethods(List.of(// quais métodos estão liberados via CORS?
+
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedMethods(List.of(
                 HttpMethod.GET.name(),
                 HttpMethod.PUT.name(),
                 HttpMethod.POST.name(),
                 HttpMethod.DELETE.name()
-        )); // métodos permitidos para o front acessar
+        ));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // endpoints permitidos para o front acessar
+
         source.registerCorsConfiguration("/**", configuration.applyPermitDefaultValues());
         return source;
     }
-    // "/servicos/funcionarios" -> "/**" -> TODOS OS ENDPOINTS
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

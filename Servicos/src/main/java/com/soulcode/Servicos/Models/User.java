@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto incremento
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(unique = true, nullable = false)
@@ -16,7 +16,7 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @ColumnDefault("true") // 1 -> enabled, 0 -> disabled
+    @ColumnDefault("true")
     private boolean isEnabled = true;
 
     public boolean isEnabled() {

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
-// Essa classe entra em ação ao chamar /login
+
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private AuthenticationManager authenticationManager;
     private TokenUtils jwtUtils;
@@ -29,12 +29,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        // Tenta a autenticar o usuário
+
         try {
-            // {"login": "", "password":""}
-            // extrair informações de user da request "bruta"
+
             User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
-            return authenticationManager.authenticate( // chama a autenticação do spring
+            return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             user.getLogin(),
                             user.getPassword(),
@@ -42,36 +41,36 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                     )
             );
         } catch (IOException io) {
-            // caso o json da requisição não bater com o User.class
+
             throw new RuntimeException(io.getMessage());
         }
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        // gerar o token e devolver para o usuário que se autenticou com sucesso
+
         UserSecurityDetail user = (UserSecurityDetail) authResult.getPrincipal();
-        String token = jwtUtils.generateToken(user.getUsername()); // dasdas8238209183901823
+        String token = jwtUtils.generateToken(user.getUsername());
 
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
         response.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
-        // {"Authorization": "<token>"}
-        response.getWriter().write("{\"Authorization\": \"" + token + "\"}"); // escreve no body
-        response.getWriter().flush(); // termina a escrita
+
+        response.getWriter().write("{\"Authorization\": \"" + token + "\"}");
+        response.getWriter().flush();
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        // Customizar a resposta de erro do login que falhou
-        response.setStatus(401); // unauthorized
+
+        response.setStatus(401);
         response.setContentType("application/json");
-        response.getWriter().write(json()); // mensagem de erro no body
-        response.getWriter().flush(); // termina a escrita
+        response.getWriter().write(json());
+        response.getWriter().flush();
     }
 
-    String json() { // formatar a mensagem de erro
+    String json() {
         long date = new Date().getTime();
         return "{"
                 + "\"timestamp\": " + date + ", "
@@ -82,11 +81,4 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                 + "}";
     }
 }
-/**
- * FRONT MANDA {"login": "jr@gmail.com", "password": "12345"}
- * A partir do JSON -> User
- * Tenta realizar autenticação
- * Caso dê certo:
- * - Gera o token JWT
- * - Retorna o token para o FRONT
- */
+

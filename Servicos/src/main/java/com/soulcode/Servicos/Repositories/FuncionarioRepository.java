@@ -13,15 +13,15 @@ import java.util.Optional;
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Integer> {
 
     Optional<Funcionario> findByEmail(String email);
-    // Optional<Funcionario> findByNome
 
-    //Optional<Funcionario> findByNomeAndEmailAndFoto(String nome, String email, String foto);
+
+
     List<Funcionario> findByCargo(Optional<Cargo> cargo);
 
     @Query(value = "SELECT * FROM funcionario WHERE status = :status", nativeQuery = true)
     List<Funcionario> findByStatus(String status);
 
-    //findByNomeDoCargo
+
     List<Funcionario> findByCargo_Nome(String nome);
 
     List<Funcionario> findByFotoIsNull();

@@ -18,15 +18,11 @@ public class UserSecurityDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByLogin(username); // filtro por email
-        if (user.isEmpty()) { // ou use "!user.isPresent()"
+        Optional<User> user = userRepository.findByLogin(username);
+        if (user.isEmpty()) {
             throw new UsernameNotFoundException("Usuário não encontrado");
         }
-        // user.get().getStatus();
+
         return new UserSecurityDetail(user.get().getLogin(), user.get().getPassword(),user.get().isEnabled());
     }
 }
-/**
- * O propósito do UserDetailService é carregar de alguma fonte de dados
- * o usuário e criar uma instância de AuthUserDetail, conhecida pelo Spring.
- */
