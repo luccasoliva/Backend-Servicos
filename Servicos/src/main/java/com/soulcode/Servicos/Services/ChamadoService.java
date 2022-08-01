@@ -90,11 +90,13 @@ public class ChamadoService {
     //serviço para cadastro de novo chamado
 
     @CachePut(value = "chamadosCache", key = "#chamados.idChamado")
-    public Chamado cadastrarChamado(Chamado chamado, Integer idCliente){
+    public Chamado cadastrarChamado(Chamado chamado, Integer idCliente, Integer idFuncionario){
         // regra 3 - atribuuição do status recebido pra o chamado que está sendo cadastrado
         chamado.setStatus(StatusChamado.RECEBIDO);
+
         // regra 2 - dizer que ainda não atribuimos esse chamado pra nenhum funcionário
-        chamado.setFuncionario(null);
+        Optional<Funcionario> funcionario = funcionarioRepository.findById(idFuncionario);
+        chamado.setFuncionario(funcionario.get());
         //regra 1 - buscando os dados do cliente dono do chamado
         Optional<Cliente> cliente = clienteRepository.findById(idCliente);
         chamado.setCliente(cliente.get());
@@ -118,9 +120,11 @@ public class ChamadoService {
         Chamado chamadoSemAsNovasAlteracoes = mostrarUmChamado(idChamado);
         Funcionario funcionario = chamadoSemAsNovasAlteracoes.getFuncionario();
         Cliente cliente = chamadoSemAsNovasAlteracoes.getCliente();
+        Pagamento pagamento = chamadoSemAsNovasAlteracoes.getPagamento();
 
         chamado.setCliente(cliente);
         chamado.setFuncionario(funcionario);
+        chamado.setPagamento(pagamento);
         return chamadoRepository.save(chamado);
     }
 

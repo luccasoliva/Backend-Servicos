@@ -1,7 +1,9 @@
 package com.soulcode.Servicos.Controllers;
 
 import com.soulcode.Servicos.Models.Chamado;
+import com.soulcode.Servicos.Models.Pagamento;
 import com.soulcode.Servicos.Services.ChamadoService;
+import com.soulcode.Servicos.Services.PagamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class ChamadoController {
 
     @Autowired
     ChamadoService chamadoService;
+
+    @Autowired
+    PagamentoService pagamentoService;
 
     @GetMapping("/chamados")
     public List<Chamado> mostrarTodosChamados(){
@@ -74,11 +79,11 @@ public class ChamadoController {
     }
 
 
-    @PostMapping("/chamados/{idCliente}")
+    @PostMapping("/chamados/{idCliente}/{idFuncionario}")
     public ResponseEntity<Chamado> cadastrarChamado(@PathVariable Integer idCliente,
+                                                    @PathVariable Integer idFuncionario,
                                                     @RequestBody Chamado chamado){
-        chamado = chamadoService.cadastrarChamado(chamado,idCliente);
-
+        chamado = chamadoService.cadastrarChamado(chamado,idCliente, idFuncionario);
         URI novaUri = ServletUriComponentsBuilder.fromCurrentRequest().path("{/id}")
                 .buildAndExpand(chamado.getIdChamado()).toUri();
         return ResponseEntity.created(novaUri).body(chamado);
@@ -96,8 +101,8 @@ public class ChamadoController {
     public ResponseEntity<Chamado> editarChamado(@PathVariable Integer idChamado,
                                                  @RequestBody Chamado chamado){
         chamado.setIdChamado(idChamado);
-        chamadoService.editarChamado(chamado, idChamado);
-        return ResponseEntity.ok().build();
+        chamado = chamadoService.editarChamado(chamado, idChamado);
+        return ResponseEntity.ok().body(chamado);
     }
 
 
