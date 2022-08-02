@@ -17,12 +17,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-// quando se fala em serviços, estamos falando dos métodos do crud da tabela
+
 
 @Service
 public class FuncionarioService {
 
-    // aqui se faz a injeção de dependência
+
     @Autowired
     FuncionarioRepository funcionarioRepository;
 
@@ -32,10 +32,8 @@ public class FuncionarioService {
 
     private CacheManager cacheManager;
 
-    //primeiro serviço na tabela de funcionário vai ser a leitura de todos
-    //os funcionários cadastrados
-    //findAll -> método do spring Data JPA -> busca todos os registros de uma tabela
-    @Cacheable("funcionariosCache") // só chama o return se o cache expirar funcionarios::[]
+
+    @Cacheable("funcionariosCache")
     public List<Funcionario> mostrarTodosFuncionarios(){
 
         return funcionarioRepository.findAll();
@@ -47,10 +45,9 @@ public class FuncionarioService {
 
 
 
-    //vamos mais um serviço relacionado ao funcionário
-    //criar um serviço de buscar apenas um funcionário pelo seu id(chave primária)
 
-    @Cacheable(value = "funcionariosCache", key = "#idFuncionario") // funcionarios::1
+
+    @Cacheable(value = "funcionariosCache", key = "#idFuncionario")
     public Funcionario mostrarUmFuncionarioPeloId(Integer idFuncionario)
     {
         Optional<Funcionario> funcionario = funcionarioRepository.findById(idFuncionario);
@@ -59,21 +56,21 @@ public class FuncionarioService {
         );
     }
 
-    //vamos criar mais um serviço pra buscar um funcionário pelo seu email
-    @Cacheable(value = "funcionariosCache", key = "#email") // funcionarios::
+
+    @Cacheable(value = "funcionariosCache", key = "#email")
     public Funcionario mostrarUmFuncionarioPeloEmail(String email){
         Optional<Funcionario> funcionario = funcionarioRepository.findByEmail(email);
         return funcionario.orElseThrow();
     }
 
 
-    @Cacheable(value = "funcionariosCache", key = "#idCargo") // funcionarios::1
+    @Cacheable(value = "funcionariosCache", key = "#idCargo")
     public List<Funcionario> mostrarTodosFuncionariosDeUmCargo(Integer idCargo){
         Optional<Cargo> cargo = cargoRepository.findById(idCargo);
         return funcionarioRepository.findByCargo(cargo);
     }
 
-    //query findTotalPagamento
+
     public Double findTotalPagamento(Integer idFuncionario){
         Optional<Funcionario> funcionario = Optional.ofNullable(funcionarioRepository.findById(idFuncionario).orElseThrow(
                 () -> new EntityNotFoundException("Funcionário não cadastrado: " + idFuncionario)
@@ -81,8 +78,8 @@ public class FuncionarioService {
         return funcionarioRepository.findTotalPagamento(funcionario);
     }
 
-    //vamos criar um serviço para cadastrar um novo funcionário
-    @CachePut(value = "funcionariosCache", key = "#funcionario.idFuncionario") // funcionarios::1
+
+    @CachePut(value = "funcionariosCache", key = "#funcionario.idFuncionario")
     public Funcionario cadastrarFuncionario(Funcionario funcionario, Integer idCargo) throws DataIntegrityViolationException {
 
 
@@ -93,7 +90,7 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionario);
     }
 
-    @CacheEvict(value = "funcionariosCache", key = "#idFuncionario") // funcionarios::1
+    @CacheEvict(value = "funcionariosCache", key = "#idFuncionario")
     public void excluirFuncionario(Integer idFuncionario){
         Funcionario funcionario = mostrarUmFuncionarioPeloId(idFuncionario);
         funcionario.setStatus(StatusFuncionario.INATIVO);
@@ -105,7 +102,7 @@ public class FuncionarioService {
     }
 
 
-    @CachePut(value = "funcionariosCache", key = "#idFuncionario") // funcionarios::1
+    @CachePut(value = "funcionariosCache", key = "#idFuncionario")
     public Funcionario salvarFoto(Integer idFuncionario, String caminhoFoto){
         Funcionario funcionario = mostrarUmFuncionarioPeloId(idFuncionario);
         funcionario.setFoto(caminhoFoto);
@@ -113,7 +110,7 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionario);
     }
 
-    //Número total de funcionarios pelo findByCargo_Nome
+
 
     public List<Funcionario> totalFuncionariosPeloCargo(String nomeCargo){
         return funcionarioRepository.findByCargo_Nome(nomeCargo);

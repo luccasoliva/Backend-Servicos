@@ -49,7 +49,7 @@ public class FuncionarioController {
         return funcionarios;
     }
 
-    //findTotalPagamento
+
     @GetMapping("/funcionarios/totalRecebido/{idFuncionario}")
     public Double findTotalPagamento(@PathVariable Integer idFuncionario){
         Double total = funcionarioService.findTotalPagamento(idFuncionario);
@@ -58,11 +58,10 @@ public class FuncionarioController {
 
     @PostMapping("/funcionarios/{idCargo}")
     public ResponseEntity<Funcionario> cadastrarFuncionario(@PathVariable Integer idCargo, @RequestBody Funcionario funcionario){
-        // nessa  linha 42, o funcionário já é salvo na tabela do database
-        // agora precisamos criar uma uri para esse novo registro da tabela
+
         funcionario = funcionarioService.cadastrarFuncionario(funcionario,idCargo);
         URI novaUri = ServletUriComponentsBuilder.fromCurrentRequest().path("id")
-                .buildAndExpand(funcionario.getIdFuncionario()).toUri(); // funcionarios/31
+                .buildAndExpand(funcionario.getIdFuncionario()).toUri();
         return ResponseEntity.created(novaUri).body(funcionario);
 
     }
@@ -81,7 +80,7 @@ public class FuncionarioController {
         return ResponseEntity.ok().body(funcionario);
     }
 
-    //Número total de funcionarios pelo findByCargo_Nome
+
     @GetMapping("/qtdFuncionariosPorCargo")
     public int totalFuncionariosPeloCargo(@RequestParam("cargo") String nomeCargo){
         return funcionarioService.totalFuncionariosPeloCargo(nomeCargo).size();

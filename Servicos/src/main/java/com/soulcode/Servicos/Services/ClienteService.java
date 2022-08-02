@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 public class ClienteService {
-    //aqui fazemos a injeção de depência
+
     @Autowired
     ClienteRepository clienteRepository;
 
@@ -29,14 +29,14 @@ public class ClienteService {
     @Autowired
     ChamadoService chamadoService;
 
-    // findAll (método da Spring Data) - busca todos os registros
-    @Cacheable("clientesCache") // só chama o return se o cache expirar clientesCache::[]
+
+    @Cacheable("clientesCache")
     public List<Cliente> mostrarTodosClientes() {
         return clienteRepository.findAll();
     }
 
-    // findById - busca um cliente específico pelo seu id
-    @Cacheable(value = "clientesCache", key = "#idCliente") // clientesCache::1
+
+    @Cacheable(value = "clientesCache", key = "#idCliente")
     public Cliente mostrarUmCliente(Integer idCliente) {
         Optional<Cliente> cliente = clienteRepository.findById(idCliente);
         return cliente.orElseThrow();
@@ -58,20 +58,19 @@ public class ClienteService {
 
     @CachePut(value = "clientesCache", key = "#cliente.idCliente")
     public Cliente inserirCliente(Cliente cliente) {
-        //por precaução vamos limpar o campo de id do cliente
+
         cliente.setIdCliente(null);
         return clienteRepository.save(cliente);
     }
 
-    // editar um cliente já cadastrado
-    // atualiza(substitui) a info no cache de acordo com a key
-    @CachePut(value = "clientesCache", key = "#cliente.idCliente") //SPEL
+
+    @CachePut(value = "clientesCache", key = "#cliente.idCliente")
     public Cliente editarCliente(Cliente cliente) {
         mostrarUmCliente(cliente.getIdCliente());
-        return clienteRepository.save(cliente); // FAZ O CACHE DESSE RETORNO
+        return clienteRepository.save(cliente);
     }
 
-    // deleteById  - excluir um cliente pelo seu id
+
     @CacheEvict(value = "clientesCache", key = "#idCliente", allEntries = true)
     public void excluirCliente(Integer idCliente) {
         mostrarUmCliente(idCliente);

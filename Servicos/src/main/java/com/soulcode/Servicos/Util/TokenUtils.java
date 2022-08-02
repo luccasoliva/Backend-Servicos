@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 
 @Component
-public class TokenUtils { // gerenciar e gerar tokens
+public class TokenUtils {
     @Value("${jwt.secret}")
     private String secret;
 
@@ -17,7 +17,7 @@ public class TokenUtils { // gerenciar e gerar tokens
 
     public String generateToken(String email) {
         return JWT.create()
-                .withSubject(email) // email do usuário
+                .withSubject(email)
                 .withExpiresAt(
                         new Date(System.currentTimeMillis() + expiration)
                 ).sign(Algorithm.HMAC512(secret));
@@ -27,6 +27,6 @@ public class TokenUtils { // gerenciar e gerar tokens
         return JWT.require(Algorithm.HMAC512(secret))
                 .build()
                 .verify(token)
-                .getSubject(); // email/login
+                .getSubject();
     }
 }
