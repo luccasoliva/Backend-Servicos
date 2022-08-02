@@ -78,11 +78,15 @@ public class ChamadoService {
 
 
     @CachePut(value = "chamadosCache", key = "#chamados.idChamado")
-    public Chamado cadastrarChamado(Chamado chamado, Integer idCliente){
 
+    public Chamado cadastrarChamado(Chamado chamado, Integer idCliente, Integer idFuncionario){
+       
         chamado.setStatus(StatusChamado.RECEBIDO);
 
-        chamado.setFuncionario(null);
+       
+        Optional<Funcionario> funcionario = funcionarioRepository.findById(idFuncionario);
+        chamado.setFuncionario(funcionario.get());
+      
 
         Optional<Cliente> cliente = clienteRepository.findById(idCliente);
         chamado.setCliente(cliente.get());
@@ -100,9 +104,11 @@ public class ChamadoService {
         Chamado chamadoSemAsNovasAlteracoes = mostrarUmChamado(idChamado);
         Funcionario funcionario = chamadoSemAsNovasAlteracoes.getFuncionario();
         Cliente cliente = chamadoSemAsNovasAlteracoes.getCliente();
+        Pagamento pagamento = chamadoSemAsNovasAlteracoes.getPagamento();
 
         chamado.setCliente(cliente);
         chamado.setFuncionario(funcionario);
+        chamado.setPagamento(pagamento);
         return chamadoRepository.save(chamado);
     }
 

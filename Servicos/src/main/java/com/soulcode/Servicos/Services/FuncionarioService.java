@@ -86,7 +86,7 @@ public class FuncionarioService {
         funcionario.setIdFuncionario(null);
         Optional<Cargo> cargo = cargoRepository.findById(idCargo);
         funcionario.setCargo(cargo.get());
-
+        funcionario.setStatus(StatusFuncionario.ATIVO);
         return funcionarioRepository.save(funcionario);
     }
 
