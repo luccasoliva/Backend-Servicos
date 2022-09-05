@@ -129,7 +129,7 @@ public class ChamadoService {
 
 
     @CachePut(value = "chamadosCache", key = "#idChamado")
-    public Chamado modificarStatus(Integer idChamado,String status){
+    public void modificarStatus(Integer idChamado, String status){
         Chamado chamado = mostrarUmChamado(idChamado);
         switch (status){
             case "ATRIBUIDO":
@@ -153,7 +153,7 @@ public class ChamadoService {
                 break;
             }
         }
-        return chamadoRepository.save(chamado);
+        chamadoRepository.save(chamado);
     }
 
 

@@ -5,7 +5,6 @@ import com.soulcode.Servicos.Models.Pagamento;
 import com.soulcode.Servicos.Models.StatusPagamento;
 import com.soulcode.Servicos.Repositories.ChamadoRepository;
 import com.soulcode.Servicos.Repositories.PagamentoRepository;
-import com.soulcode.Servicos.Services.Exceptions.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +54,7 @@ public class PagamentoService {
         return pagamentoRepository.save(pagamento);
     }
 
-    public Pagamento modificarStatusPagamento(Integer idPagamento,String status){
+    public void modificarStatusPagamento(Integer idPagamento, String status){
         Pagamento pagamento = mostrarPagamentoPeloId(idPagamento);
 
         switch (status){
@@ -66,7 +65,7 @@ public class PagamentoService {
                 pagamento.setStatus(StatusPagamento.QUITADO);
                 break;
         }
-        return pagamentoRepository.save(pagamento);
+        pagamentoRepository.save(pagamento);
     }
 
     public List<List> orcamentoComServicoCliente(){
