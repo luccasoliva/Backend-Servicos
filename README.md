@@ -1,7 +1,11 @@
 # BCW20-Servicos-Squad02
 
-<h1>Ecommerce Imobiliário</h1>
-<p>Backend do projeto de Gerenciamento Servicos!</p>
+<h1>Gerenciamento de Servicos</h1>
+<p>App que gerencia Funcionários, Clientes e Chamados</p>
+<p>É possível criar clientes e chamados relacionados à esses clientes</p>
+<p>Atribuir funcionários para realizar os chamados e mudar os status dos chamados</p>
+<p>Além disso é possível alterar o pagamento dos chamados e status dos chamados</p>
+
  
 <hr>
 <h2>O quê foi utilizado?</h2>
