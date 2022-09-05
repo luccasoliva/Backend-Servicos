@@ -16,4 +16,5 @@
 <hr>
 <h2>Documentação dos Endpoints no Postman</h2>
 <p>Postman: https://documenter.getpostman.com/view/20402262/UzXNUxBm</p>
-
+<h2>Login e Senha de um usuário com a role de ADMIN, para testes.</h2>
+<p>Login: teste@gmail.com | Senha: 123</p>
